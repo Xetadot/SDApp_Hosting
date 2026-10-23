@@ -18,16 +18,27 @@
     <h1 id="authTitle">Welcome back</h1>
     <p class="subtitle" id="authSubtitle">Sign in to your SDApp account</p>
     <div class="error-msg" id="authError"></div>
+    
     <div class="form-group"><label>Username</label><input type="text" id="usernameInput" placeholder="Enter username"></div>
     <div class="form-group"><label>Password</label><input type="password" id="passwordInput" placeholder="Enter password"></div>
+    
     <button class="login-btn" id="authBtn">Sign In</button>
+    
+    <!-- Quick Login Buttons (Fetch by UID) -->
+    <div style="margin-top: 1.5rem; display: flex; gap: 10px;">
+      <button class="btn btn-outline" style="flex: 1; font-size: 0.75rem; padding: 8px 10px;" onclick="quickLoginByUID('U0129')">
+        <i class="fas fa-user-shield"></i> Admin (U0129)
+      </button>
+      <button class="btn btn-outline" style="flex: 1; font-size: 0.75rem; padding: 8px 10px;" onclick="quickLoginByUID('U0122')">
+        <i class="fas fa-user"></i> Resident (U0122)
+      </button>
+    </div>
+
     <div class="toggle-auth"><span id="toggleAuth">Don't have an account? Sign up</span></div>
   </div>
 </div>
 
 <div id="appContainer" style="display:none;">
-  
-  <!-- FIXED TOP BAR (Full width, top level) -->
   <header class="top-bar">
     <div class="greeting">
       <h1 id="greetingText">Good morning 👋</h1>
@@ -36,9 +47,7 @@
     <div class="badge-status"><i class="fas fa-circle"></i> System Active</div>
   </header>
 
-  <!-- SIDEBAR & MAIN CONTENT WRAPPER (Below Top Bar) -->
   <div class="app-body">
-    
     <aside class="sidebar">
       <div class="logo-area">
         <div class="logo-icon">S</div>
