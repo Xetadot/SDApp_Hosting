@@ -255,6 +255,36 @@ async function handleAuth(){
   if (r) { currentUser = r; userRole = 'resident'; loginSuccess(); return; }
   showAuthError('Invalid username or password');
 }
+
+// ============================================================
+// QUICK LOGIN BY UID
+// ============================================================
+async function quickLoginByUID(uid) {
+  if (!DB) {
+    alert('Database not loaded yet, please refresh.');
+    return;
+  }
+
+  // 1. Search Admin array
+  let user = DB.admin.find(u => u.UID === uid);
+  let role = 'admin';
+
+  // 2. If not found, search Resident array
+  if (!user) {
+    user = DB.residents.find(u => u.UID === uid);
+    role = 'resident';
+  }
+
+  // 3. If user found, log them in directly
+  if (user) {
+    currentUser = user;
+    userRole = role;
+    loginSuccess();
+  } else {
+    alert(`Error: User with UID ${uid} not found in the database.`);
+  }
+}
+
 function loginSuccess(){
   hideAuthError();
   document.getElementById('loginPage').style.display = 'none';
@@ -581,7 +611,6 @@ function getRooms(){
 
 function roomKeyFor(uidA, uidB){
   const rooms = getRooms();
-  // Find a room whose RID matches {uidA, uidB} as a set
   for (const rk of Object.keys(rooms)) {
     const rid = rooms[rk]?.RID;
     if (Array.isArray(rid) && rid.length === 2 &&
@@ -589,7 +618,6 @@ function roomKeyFor(uidA, uidB){
       return rk;
     }
   }
-  // Create new room
   const maxNum = Object.keys(rooms).reduce((m, rk) => {
     const n = parseInt(rk.replace('room',''), 10);
     return !isNaN(n) && n > m ? n : m;
@@ -941,12 +969,12 @@ function switchView(name){
   if (!v) return;
   v.classList.add('active');
   if (name === 'chat-community' || name === 'chat-personal') {
-      v.style.display = 'flex';
-      document.querySelector('.main').classList.add('chat-open');
-    } else {
-      v.style.display = 'block';
-      document.querySelector('.main').classList.remove('chat-open');
-    }
+    v.style.display = 'flex';
+    document.querySelector('.main').classList.add('chat-open');
+  } else {
+    v.style.display = 'block';
+    document.querySelector('.main').classList.remove('chat-open');
+  }
 
   if (name === 'dashboard') { renderVisitorCard(); renderDashMarketPreview(); updateDashChatPreview(); }
   if (name === 'visitor') renderGuests();
